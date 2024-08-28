@@ -19,6 +19,9 @@ jobs:
         with:
           php-version: '8.1' # or your Laravel PHP version
 
+      - name: Remove composer lock
+        run: rm -f composer.lock
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
