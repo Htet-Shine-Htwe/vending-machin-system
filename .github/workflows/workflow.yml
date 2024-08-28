@@ -25,6 +25,12 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Build assets with Vite
+        run: npm run build
+
       - name: Create .env.testing file
         run: |
           cp .env.example .env.testing
