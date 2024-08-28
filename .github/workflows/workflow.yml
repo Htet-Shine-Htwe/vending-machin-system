@@ -36,7 +36,7 @@ jobs:
         run: php artisan migrate --env=testing --force
 
       - name: Run Unit tests -- feature tests
-        run: php artisan test --env=testing --testsuite=Feature
+        run: php artisan test --testsuite=Feature
 
       - name: Run Unit tests -- unit tests
         run: php artisan test --env=testing --testsuite=Unit
