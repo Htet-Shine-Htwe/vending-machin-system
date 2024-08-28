@@ -1,0 +1,65 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - production
+      - development
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # or your Laravel PHP version
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Create .env.testing file
+        run: |
+          cp .env.example .env.testing
+          echo "DB_CONNECTION=sqlite" >> .env.testing
+          echo "DB_DATABASE=:memory:" >> .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Run migrations for testing
+        run: php artisan migrate --env=testing --force
+
+      - name: Run Unit tests -- feature tests
+        run: php artisan test --env=testing --testsuite=Feature
+
+      - name: Run Unit tests -- unit tests
+        run: php artisan test --env=testing --testsuite=Unit
+
+      - name: Set up Git user identity
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      # Fetch from Heroku and rebase depending on the branch
+      - name: Fetch from Heroku
+        if: github.ref == 'refs/heads/main'
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/your-production-app.git
+          git fetch heroku production
+          git rebase -X theirs heroku/main
+
+      - name: Continue rebase if necessary
+        run: git rebase --continue || echo "No rebase needed"
+
+      # Deploy to Heroku based on the branch
+      - name: Deploy to Heroku (Production)
+        if: github.ref == 'refs/heads/main' && success()
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          git push heroku master --force
