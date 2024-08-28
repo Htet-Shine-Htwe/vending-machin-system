@@ -38,7 +38,7 @@ use App\Enums\RoleEnum;
 
 
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                             <path d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

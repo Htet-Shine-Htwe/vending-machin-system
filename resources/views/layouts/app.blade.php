@@ -13,14 +13,13 @@
 </head>
 <body>
 <div
-    class="flex h-screen bg-gray-50"
+    class="flex max-h-screen bg-gray-50"
     :class="{ 'overflow-hidden': isSideMenuOpen }"
 >
-    <!-- Desktop sidebar -->
     @include('layouts.navigation')
-    <!-- Mobile sidebar -->
-    <!-- Backdrop -->
+
     @include('layouts.navigation-mobile')
+
     <div class="flex flex-col flex-1 w-full">
         @include('layouts.top-menu')
         <main class="h-full overflow-y-auto">
