@@ -26,27 +26,7 @@
                             </td>
                         </tr>
                     @endforeach
-                    @foreach($users as $user)
-                    <tr class="text-gray-700">
-                        <td class="px-4 py-3 text-sm">
-                            {{ $user->name }}
-                        </td>
-                        <td class="px-4 py-3 text-sm">
-                            {{ $user->email }}
-                        </td>
-                    </tr>
-                @endforeach
 
-                @foreach($users as $user)
-                <tr class="text-gray-700">
-                    <td class="px-4 py-3 text-sm">
-                        {{ $user->name }}
-                    </td>
-                    <td class="px-4 py-3 text-sm">
-                        {{ $user->email }}
-                    </td>
-                </tr>
-            @endforeach
                     </tbody>
                 </table>
             </div>
