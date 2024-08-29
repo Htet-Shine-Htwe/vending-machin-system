@@ -17,7 +17,9 @@ class ProductController extends Controller {
     }
 
     public function index( Request $request ) : View {
-        $products = $this->productService->getAll( $request );
+        $products = ($this->productService->getAll( $request ))
+        ->paginate( $request->per_page ?? 10 )
+        ->withQueryString();
 
         return view( 'portal.products.index', compact( 'products' ) );
     }

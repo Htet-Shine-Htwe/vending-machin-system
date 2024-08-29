@@ -26,5 +26,7 @@ trait ProductScope
             $query->orderBy('quantity_available', 'desc');
         });
 
+        return $query;
+
     }
 }
