@@ -1,14 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
         {{ __('Products') }}
+
+
+    </x-slot>
+
+    <x-slot name="headerActions">
+
+        <a href="{{ route('products.create') }}" class="btn flex justify-center items-center px-4 py-2 ml-4 text-sm font-semibold rounded-md
+        bg-purple-600 text-white
+        ">
+            <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+
+        </a>
     </x-slot>
 
     @php
         $sorts = [
             'price_asc' => 'Highest Price',
             'price_desc' => 'Lowest Price',
-            'stock_asc' => 'Highest Stock',
-            'stock_desc' => 'Lowest Stock',
+            'quantity_asc' => 'Highest Stock',
+            'quantity_desc' => 'Lowest Stock',
         ];
     @endphp
 
@@ -18,7 +32,6 @@
               <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                 <div>
 
-                  <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Electronics</h2>
                 </div>
                 <div class="flex items-center space-x-4">
                   <button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button" class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
@@ -53,10 +66,13 @@
 
               </div>
               <div class="w-full text-center">
-                <button type="button" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
+                <div class="px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase bg-gray-50 border-t sm:grid-cols-9">
+                    {{ $products->links() }}
+                </div>
               </div>
             </div>
 
           </section>
+
 
 </x-app-layout>
