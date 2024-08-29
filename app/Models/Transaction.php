@@ -11,7 +11,6 @@ class Transaction extends Model
 
     protected $fillable = [
         'total_amount',
-        'products',
         'user_id',
     ];
 
@@ -41,9 +40,7 @@ class Transaction extends Model
 
     public function products()
     {
-        return Product::all()->filter(function ($product) {
-            return in_array($product->id, array_column($this->products, 'id')) ? $product : null;
-        });
+        return $this->belongsToMany(TransactionProduct::class);
     }
 
 
