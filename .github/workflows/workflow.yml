@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - production
-      - development
 
 jobs:
   build-and-deploy:

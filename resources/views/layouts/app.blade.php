@@ -13,28 +13,56 @@
 </head>
 <body>
 <div
-    class="flex h-screen bg-gray-50"
+    class="flex max-h-screen bg-gray-50"
     :class="{ 'overflow-hidden': isSideMenuOpen }"
 >
-    <!-- Desktop sidebar -->
     @include('layouts.navigation')
-    <!-- Mobile sidebar -->
-    <!-- Backdrop -->
+
     @include('layouts.navigation-mobile')
+
+
+
     <div class="flex flex-col flex-1 w-full">
+
         @include('layouts.top-menu')
-        <main class="h-full overflow-y-auto">
-            <div class="container px-6 mx-auto grid">
-                @if (isset($header))
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <span class="font-medium">Failed !</span> {{ session('error') }}
+                  </div>
+            </div>
+        @endif
+
+        @if (session('success'))
+        <div class="p-4 mb-4 text-sm text-green-600 bg-green-200 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium">Success !</span> {{ session('success') }}
+          </div>
+        @endif
+
+        <main class="h-full overflow-y-auto h-screen">
+            <div class="container px-6 mx-auto grid ">
+
+                <div class="flex items-center justify-between">
+                    @if (isset($header))
                     <h2 class="my-6 text-2xl font-semibold text-gray-700">
                         {{ $header }}
                     </h2>
-                @endif
+                    @endif
+
+                    @if (isset($headerActions))
+                        <div class="flex gap-3">
+                            {{ $headerActions }}
+                        </div>
+                    @endif
+                </div>
 
                 {{ $slot }}
             </div>
         </main>
     </div>
 </div>
+
+@stack('script')
 </body>
 </html>

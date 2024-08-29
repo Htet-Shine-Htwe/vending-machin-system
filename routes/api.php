@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::prefix('v1')
+    ->name('api.')
+    ->group(function ()
+    {
+        \App\Services\Route\RouteHelper::includedRouteFiles(__DIR__ . '/api');
+    });
