@@ -16,7 +16,11 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(ProductController::class)->group(function(){
         Route::get('products', 'index')->name('products.index');
-
+        Route::get('products/create', 'create')->name('products.create');
+        Route::post('products/store', 'store')->name('products.store');
+        Route::get('products/edit/{slug}', 'edit')->name('products.edit');
+        Route::post('products/update/{slug}', 'update')->name('products.update');
+        Route::delete('products/delete/{slug}', 'delete')->name('products.delete');
     });
 
     Route::controller(ProfileController::class)->group(function(){
