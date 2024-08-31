@@ -19,10 +19,10 @@
 
     @php
         $sorts = [
-            'price_asc' => 'Highest Price',
-            'price_desc' => 'Lowest Price',
-            'quantity_asc' => 'Highest Stock',
-            'quantity_desc' => 'Lowest Stock',
+            'price_desc' => 'Highest Price',
+            'price_asc' => 'Lowest Price',
+            'quantity_desc' => 'Highest Stock',
+            'quantity_asc' => 'Lowest Stock',
         ];
     @endphp
 
