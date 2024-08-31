@@ -5,10 +5,7 @@ namespace App\Services\Product;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
-use App\Traits\Scopes\ProductScope;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductService {
 

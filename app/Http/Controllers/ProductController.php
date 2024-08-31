@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Models\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -63,7 +62,8 @@ class ProductController extends Controller {
 
     }
 
-    public function delete(string $slug ) {
+    public function delete(string $slug ) : RedirectResponse
+    {
         try {
             $this->productService->delete( $slug );
 

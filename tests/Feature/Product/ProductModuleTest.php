@@ -5,7 +5,6 @@ namespace Tests\Feature\Product;
 use App\Models\Product;
 use App\Services\Product\ProductService;
 use Database\Seeders\RolePermissionSeeder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Builder;
 use Mockery\MockInterface;
@@ -50,6 +49,32 @@ class ProductModuleTest extends TestCase
         });
 
     }
+
+    public function test_sorting_on_the_product_list_view()
+    {
+        $productsCollection = Product::factory()->count(5)->make();
+
+        $mockBuilder = \Mockery::mock(Builder::class);
+        $mockBuilder->shouldReceive('filter')->andReturnSelf();
+        $mockBuilder->shouldReceive('latest')->andReturnSelf();
+
+        $this->mockPaginate($mockBuilder, $productsCollection);
+
+        $this->mock(ProductService::class, function (MockInterface $mock) use ($mockBuilder) {
+            $mock->shouldReceive('getAll')
+                ->once()
+                ->andReturn($mockBuilder);
+        });
+
+        $response = $this->actingAsAdmin()->get(route('products.index', ['sort' => 'price_asc']));
+
+        $response->assertStatus(200);
+
+        $response->assertViewHas('products', function ($viewProducts) use ($productsCollection) {
+            return $viewProducts->getCollection()->toArray() == $productsCollection->toArray();
+        });
+    }
+
 
     public function test_can_render_view_page()
     {

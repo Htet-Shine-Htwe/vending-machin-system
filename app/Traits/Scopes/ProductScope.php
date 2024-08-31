@@ -10,23 +10,27 @@ trait ProductScope
             $query->where('name', 'like', $search . '%');
         });
 
-        $query->when($filters['price_asc'] ?? null, function ($query, $min_price) {
-            $query->orderBy('price', 'asc');
-        });
 
-        $query->when($filters['price_desc'] ?? null, function ($query, $max_price) {
-            $query->orderBy('price', 'desc');
-        });
+       $query->when($filters['sort'] ?? null, function ($query) use ($filters) {
 
-        $query->when($filters['quantity_asc'] ?? null, function ($query, $min_quantity) {
-            $query->orderBy('quantity_available', 'asc');
-        });
 
-        $query->when($filters['quantity_desc'] ?? null, function ($query, $max_quantity) {
-            $query->orderBy('quantity_available', 'desc');
+            $query->when($filters['sort'] == "price_asc", function ($query) {
+                $query->orderBy('price', 'asc');
+            });
+
+            $query->when( $filters['sort'] == "price_desc" , function ($query) {
+                $query->orderBy('price', 'desc');
+            });
+
+            $query->when( $filters['sort'] == "quantity_asc" , function ($query) {
+                $query->orderBy('quantity_available', 'asc');
+            });
+
+            $query->when( $filters['sort'] == "quantity_desc" , function ($query) {
+                $query->orderBy('quantity_available', 'desc');
+            });
         });
 
         return $query;
-
     }
 }
