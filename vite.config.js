@@ -7,6 +7,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'public/js/user/cart.js',
+                'public/js/user/cart-ui.js',
             ],
             refresh: true,
         }),

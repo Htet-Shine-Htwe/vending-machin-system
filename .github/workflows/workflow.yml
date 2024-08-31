@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - production
+      - development
 
 jobs:
   build-and-deploy:
@@ -16,7 +17,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1' # or your Laravel PHP version
+          php-version: '8.1'
 
       - name: Remove composer lock
         run: rm -f composer.lock
@@ -51,9 +52,8 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
 
-      # Fetch from Heroku and rebase depending on the branch
       - name: Fetch from Heroku
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/production'
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
@@ -62,11 +62,11 @@ jobs:
           git rebase -X theirs heroku/main
 
       - name: Continue rebase if necessary
+        if: github.ref == 'refs/heads/production'
         run: git rebase --continue || echo "No rebase needed"
 
-      # Deploy to Heroku based on the branch
       - name: Deploy to Heroku (Production)
-        if: github.ref == 'refs/heads/main' && success()
+        if: github.ref == 'refs/heads/production' && success()
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
