@@ -22,6 +22,7 @@ Route::prefix('')
     ->group(function ()
     {
         \App\Services\Route\RouteHelper::includedRouteFiles(__DIR__ . '/portal');
+        \App\Services\Route\RouteHelper::includedRouteFiles(__DIR__ . '/user');
     });
 
 require __DIR__.'/auth.php';
