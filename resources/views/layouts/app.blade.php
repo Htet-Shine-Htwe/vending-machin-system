@@ -40,7 +40,7 @@
           </div>
         @endif
 
-        <main class="h-full overflow-y-auto h-screen">
+        <main class=" overflow-y-auto h-screen">
             <div class="container px-6 mx-auto grid ">
 
                 <div class="flex items-center justify-between">
