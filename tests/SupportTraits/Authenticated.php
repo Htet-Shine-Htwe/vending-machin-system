@@ -43,6 +43,7 @@ trait Authenticated {
 
     public function actingAsUser() : self {
         $this->user = User::factory()->create();
+        $this->user->assignRole( enum_value( RoleEnum::USER ) );
         $this->actingAs( $this->user );
 
         return $this;
