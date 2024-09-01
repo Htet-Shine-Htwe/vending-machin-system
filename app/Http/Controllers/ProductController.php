@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\PurchaseRequest;
+use App\Services\Product\ProductInventoryService;
 use App\Services\Product\ProductService;
+use App\Services\Transaction\PurchaseService;
+use App\Services\Transaction\TransactionService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller {
 
-    public function __construct( protected ProductService $productService ) {
+    public function __construct( protected ProductService $productService , protected PurchaseService $purchaseService ) {
 
     }
 
@@ -54,7 +60,7 @@ class ProductController extends Controller {
         try {
             $this->productService->update( $request );
 
-            return redirect()->route( 'products.index' )->with( 'success', 'Product updated successfully' );
+            return redirect()->back()->with( 'success', 'Product updated successfully' );
 
         } catch( \Exception $e ) {
             return redirect()->route( 'products.index' )->with( 'error', $e->getMessage() );
@@ -74,5 +80,14 @@ class ProductController extends Controller {
         }
     }
 
+    public function processPurchase(PurchaseRequest $request): JsonResponse
+    {
+        $result = $this->purchaseService->processPurchase($request);
 
+        if ($result['status'] === 'success') {
+            return response()->json(['message' => $result['message']], 200);
+        }
+
+        return response()->json(['error' => $result['message']], $result['code']);
+    }
 }

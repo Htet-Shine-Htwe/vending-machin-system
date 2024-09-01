@@ -23,7 +23,7 @@ class ProductSeeder extends Seeder
                 'name' => $drinksFormApi[$i]['title'],
                 'slug' => Str::slug($drinksFormApi[$i]['title']),
                 'price' => rand(1, 100),
-                'quantity_available' => 100,
+                'quantity_available' => rand(0, 100),
                 'image' => $drinksFormApi[$i]['image'],
             ];
         }

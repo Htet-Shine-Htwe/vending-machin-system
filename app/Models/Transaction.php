@@ -12,6 +12,10 @@ class Transaction extends Model
     protected $fillable = [
         'total_amount',
         'user_id',
+        'address',
+        'city',
+        'state',
+        'phone_number',
     ];
 
     protected static function boot()
@@ -40,7 +44,8 @@ class Transaction extends Model
 
     public function products()
     {
-        return $this->belongsToMany(TransactionProduct::class);
+        return $this->belongsToMany(Product::class, 'transaction_products', 'transaction_id', 'product_id')
+        ->withPivot('quantity', 'price');
     }
 
 
