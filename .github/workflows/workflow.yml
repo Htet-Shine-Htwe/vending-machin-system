@@ -69,6 +69,6 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          git checkout -b main
           git fetch --all --unshallow
+          git checkout -b main
           git push heroku main --force
