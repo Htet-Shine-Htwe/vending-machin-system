@@ -69,4 +69,4 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          git push heroku master --force
+          git push heroku
