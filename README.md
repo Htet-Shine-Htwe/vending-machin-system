@@ -65,8 +65,15 @@ This repository contains the code for a Vending Machine System. The project is b
 
 ## User Account Information
 
-- **Username:** admin@gmail.com
-- **Password:** password
+```
+**Username:** admin@gmail.com
+**Password:** password
+```
+
+```
+**Username:** user@gmail.com
+**Password:** password
+```
 
 ### Authentication Endpoints
 
