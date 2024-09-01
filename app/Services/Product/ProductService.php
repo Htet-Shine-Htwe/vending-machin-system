@@ -6,7 +6,6 @@ use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductService {
 
@@ -14,12 +13,9 @@ class ProductService {
         return Product::where( 'slug', $slug )->first();
     }
 
-    public function getAll( Request $request )  {
-        return Product::
-        filter( $request->all() )
-        ->latest()
-        ->paginate( $request->per_page ?? 10 )
-        ->withQueryString();
+    public function getAll( Request $request )
+    {
+        return Product::query()->filter( $request->all() )->latest();
     }
 
     public function create( ProductStoreRequest $request ) : Product {

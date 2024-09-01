@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
+            $table->string('address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('phone_number');
             $table->decimal('total_amount', 15, 2);
-            $table->json('products');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

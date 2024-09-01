@@ -9,17 +9,17 @@ use App\Enums\RoleEnum;
         </a>
 
         <ul class="mt-6">
+
+            @role(enum_value(RoleEnum::USER).'|'.enum_value(RoleEnum::ADMIN))
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link href="{{ route('purchase.index') }}" :active="request()->routeIs('purchase.index')">
                     <x-slot name="icon">
-                        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
-                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                        </svg>
+                    <svg fill="none" height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg"><path d="M0.978822 0.356323L0.0209961 0.643671L3.12789 11H14.9999V4.5C14.9999 3.11929 13.8806 2 12.4999 2H1.47192L0.978822 0.356323Z" fill="black"/><path clip-rule="evenodd" d="M5.5 12C4.67157 12 4 12.6716 4 13.5C4 14.3284 4.67157 15 5.5 15C6.32843 15 7 14.3284 7 13.5C7 12.6716 6.32843 12 5.5 12ZM5 13.5C5 13.2239 5.22386 13 5.5 13C5.77614 13 6 13.2239 6 13.5C6 13.7761 5.77614 14 5.5 14C5.22386 14 5 13.7761 5 13.5Z" fill="black" fill-rule="evenodd"/><path clip-rule="evenodd" d="M12.5 12C11.6716 12 11 12.6716 11 13.5C11 14.3284 11.6716 15 12.5 15C13.3284 15 14 14.3284 14 13.5C14 12.6716 13.3284 12 12.5 12ZM12 13.5C12 13.2239 12.2239 13 12.5 13C12.7761 13 13 13.2239 13 13.5C13 13.7761 12.7761 14 12.5 14C12.2239 14 12 13.7761 12 13.5Z" fill="black" fill-rule="evenodd"/></svg>
                     </x-slot>
-                    {{ __('Dashboard') }}
+                    {{ __('Purchase') }}
                 </x-nav-link>
             </li>
+            @endrole
 
             @role(enum_value(RoleEnum::ADMIN))
             <li class="relative px-6 py-3">
@@ -36,7 +36,7 @@ use App\Enums\RoleEnum;
             </li>
             @endrole
 
-
+            @role(enum_value(RoleEnum::ADMIN))
             <li class="relative px-6 py-3">
                 <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.index')">
                     <x-slot name="icon">
@@ -50,9 +50,11 @@ use App\Enums\RoleEnum;
                     {{ __('Products') }}
                 </x-nav-link>
             </li>
+            @endrole
+
 
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                <x-nav-link href="{{ route('transactions.index') }}" :active="request()->routeIs('transactions.index')">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                             <path d="M20.5 16.9286V10C20.5 6.22876 20.5 4.34315 19.3284 3.17157C18.1569 2 16.2712 2 12.5 2H11.5C7.72876 2 5.84315 2 4.67157 3.17157C3.5 4.34315 3.5 6.22876 3.5 10V19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
