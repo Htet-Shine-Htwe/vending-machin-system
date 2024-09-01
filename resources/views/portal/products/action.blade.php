@@ -74,6 +74,4 @@
 
     </section>
 
-    @include('components.product-delete-modal')
-
 </x-app-layout>

@@ -11,8 +11,7 @@
             {{ __('Order Items') }}
         </h5>
         <button type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
-        data-drawer-hide="cart-drawer"
-        >
+            data-drawer-hide="cart-drawer">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -24,14 +23,28 @@
 
     </div>
 
-    <div class="h-20 bottom-0 fixed  bg-white shadow-sm w-96 px-6">
-        <div class="flex justify-between items-center h-full ">
+    <div class="h-28 bottom-0 fixed  bg-white shadow-sm w-96 px-6">
+        <div class="flex flex-col justify-center gap-4 h-full ">
+
+            <div class="flex justify-between items-center">
                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">Total</span>
 
 
                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">$
                     <span id="cart-total">0</span>
                 </span>
+            </div>
+
+            <x-primary-button
+            {{-- onclick="purchaseCartItems()" --}}
+            id="checkout-btn"
+            data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+            class="x-primary-button block !bg-green-500 disabled:!bg-green-200">
+                Checkout
+            </x-primary-button>
         </div>
+
     </div>
+
+    @include('user.purchase.confirm-dialog')
 </div>

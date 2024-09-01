@@ -22,9 +22,10 @@
                     </svg>
                 </a>
                 <div id="tooltip-quick-look" role="tooltip"
-                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
+                    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300
+                    dark:bg-gray-700"
                     data-popper-placement="top">
-                    Quick look
+
                     <div class="tooltip-arrow" data-popper-arrow=""></div>
                 </div>
 
@@ -33,7 +34,7 @@
                     @method('DELETE')
 
                     <button type="submit" data-tooltip-target="tooltip-add-to-favorites"
-                        data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="mb-1">
+                        class="mb-1">
                         <span class="sr-only"> Delete </span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0,0,300,150">
                             <g fill="#cf0c0c" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"

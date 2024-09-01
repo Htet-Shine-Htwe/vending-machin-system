@@ -19,6 +19,7 @@
         </button>
     </x-slot>
 
+    @include('user.purchase.success-card')
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
 
@@ -47,14 +48,21 @@
                                 </td>
 
                                 <td class="px-12 py-3 text-sm">
-                                    {{ $product->quantity_available }}
+                                    @if ($product->quantity_available <= 0)
+                                        <span class="text-red-500">Out of Stock</span>
+                                    @else
+                                        {{ $product->quantity_available }}
+                                    @endif
                                 </td>
 
                                 <td class=" py-3 text-sm text-end">
 
                                     <x-primary-button onclick="handleCartItem({{ $product }},event)"
-                                        data-product-id="{{ $product->id }}"
-                                        class="x-primary-button block !bg-green-400">
+                                        :disabled="$product->quantity_available <= 0" data-product-id="{{ $product->id }}"
+                                        data-product-quantity="{{ $product->quantity_available }}"
+                                        class="x-primary-button block !bg-green-400
+                                        disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300
+                                        ">
                                         @include('svgs.checkout', ['height' => '15', 'width' => '15'])
                                     </x-primary-button>
                                 </td>
@@ -73,14 +81,70 @@
     </div>
     @include('user.purchase.drawer')
     @push('script')
-        {{-- <script src="{{ asset('js/user/purchase.js') }}"></script> --}}
+        <script src="{{ asset('js/user/purchase.js') }}"></script>
         <script src="{{ asset('js/user/cart.js') }}"></script>
         <script src="{{ asset('js/user/cart-ui.js') }}"></script>
-        <script >
-
+        <script>
+            const server_products = @json($products)['data'];
             const cart = new Cart();
             const cartDrawer = document.querySelector('#cart-drawer .flex.flex-col');
+            $("#purchase-error").hide();
 
+            $("#close-sc").click(function() {
+                $("#sc-backdrop").hide();
+                $("#sc").fadeOut(600);
+            });
+            /**
+             * Function to purchase the items in the cart.
+             */
+            function purchaseCartItems(e) {
+                e.preventDefault();
+
+                const formData = new FormData();
+                const formElements = ['state', 'city', 'address', 'phone_number'];
+
+                formElements.forEach(element => {
+                    formData.append(element, e.target[element].value.trim());
+                });
+
+                cart.items.forEach((item, index) => {
+                    formData.append(`products[${index}][id]`, item.id);
+                    formData.append(`products[${index}][quantity]`, item.quantity);
+                });
+
+                const purchaseButton = $('#confirm-purchase');
+                purchaseButton.prop('disabled', true);
+
+                resetValidationErrors(formElements);
+                const errorList = $("#purchase-error-list").html('');
+
+                ajaxCallBack("{{ route('purchase.create') }}", formData, function(response) {
+
+                    cart.clearCart();
+                    $(".x-primary-button").removeClass('!bg-red-400').addClass('!bg-green-400');
+                    cartDrawer.innerHTML = '';
+                    $("#purchase-error").hide();
+
+                    $("#sc-backdrop").show();
+                     $("#sc").fadeIn(600);
+                }, function(errors) {
+                    console.log(errors)
+                    handleAxiosFormError(errors);
+                    // if not  422
+                    if (errors.status !== 422) {
+                        $("#purchase-error").show();
+                        errorList.append(`<li>${errors.responseJSON.error}</li>`);
+                    }
+                }).always(function() {
+                    purchaseButton.prop('disabled', false);
+                });
+            }
+
+
+
+            /**
+             * Updates the buttons on the page load based on the items in the cart.
+             */
             function updateButtonsOnPageLoad() {
                 document.querySelectorAll('.x-primary-button').forEach(button => {
                     const productId = button.getAttribute('data-product-id');
@@ -92,25 +156,38 @@
                 });
             }
 
+            /**
+             * Handles the cart item based on the product selected.
+             *
+             * @param {Object} product - The selected product.
+             * @param {Event} e - The event object.
+             */
             function handleCartItem(product, e) {
                 const existingItem = cart.items.find(cartItem => cartItem.id === product.id);
+                const server_product = server_products.find(server_product => server_product.id == product.id);
 
                 if (existingItem) {
                     cart.removeItem(product.id);
                     removeItemFromCartUI(product.id);
                 } else {
                     cart.addItem(new CartItem(product.id, product.name, product.price, 1));
-                    const itemElement = appendItemToCartUI(product,cart);
+                    const itemElement = appendItemToCartUI(product, cart, server_product);
                     cartDrawer.appendChild(itemElement);
                 }
-
             }
 
+            /**
+             * Updates the state of a button based on whether a product is in the cart or not.
+             *
+             * @param {number} productId - The ID of the product.
+             * @param {boolean} isInCart - Indicates whether the product is in the cart or not.
+             */
             function updateButtonState(productId, isInCart) {
                 const button = document.querySelector(`[data-product-id="${productId}"]`);
-                console.log(button);
+
                 if (isInCart) {
                     button.classList.remove('!bg-green-400');
+
                     button.classList.add('!bg-red-400');
                 } else {
                     button.classList.remove('!bg-red-400');
@@ -118,29 +195,43 @@
                 }
             }
 
+            /**
+             * Initializes the user interface for the cart.
+             */
+            function initializeCartUI(renderCart = true) {
+
+
+                cart.items.forEach(item => {
+                    updateButtonState(item.id, true);
+
+                    if (renderCart) {
+                        const server_product = server_products.find(server_product => server_product.id == item
+                            .id);
+                        const itemElement = appendItemToCartUI(item, cart, server_product);
+
+                        cartDrawer.appendChild(itemElement);
+                    }
+                });
+            }
+
+
             document.addEventListener('DOMContentLoaded', function() {
 
                 initializeCartUI();
 
                 updateCartBadge();
 
+                /**
+                 * Updates the cart badge with the total number of items in the cart.
+                 */
                 function updateCartBadge() {
-                    // length of items in cart
                     const totalItems = cart.items.length;
                     document.getElementById('cart-badge').textContent = totalItems;
                 }
 
-                function initializeCartUI() {
-                    cart.items.forEach(item => {
-                        console.log(item);
-                        updateButtonState(item.id, true);
-                        appendItemToCartUI(item);
-                        const itemElement = appendItemToCartUI(item,cart);
-
-                        cartDrawer.appendChild(itemElement);
-                    });
-                }
-
+                /**
+                 * Display the total amount in the cart.
+                 */
                 cart.displayTotal();
             });
         </script>

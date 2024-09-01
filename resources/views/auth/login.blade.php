@@ -63,6 +63,13 @@
                         </a>
                     </p>
                 @endif
+
+                <p class="mt-4">
+                    <a class="text-sm font-medium text-primary-600 hover:underline"
+                       href="{{ route('register') }}">
+                        {{ __('No Account Yet?') }}
+                    </a>
+                </p>
             </div>
         </div>
     </div>
