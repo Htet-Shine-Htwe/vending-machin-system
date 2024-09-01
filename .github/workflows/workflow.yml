@@ -58,7 +58,7 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/vending-machine-system.git
-          git fetch heroku production
+          git fetch heroku main
           git rebase -X theirs heroku/main
 
       - name: Continue rebase if necessary
