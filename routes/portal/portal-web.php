@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,13 @@ Route::middleware(['auth'])
                 Route::get('products/edit/{slug}', 'edit')->name('products.edit');
                 Route::post('products/update/{slug}', 'update')->name('products.update');
                 Route::delete('products/delete/{slug}', 'delete')->name('products.delete');
+            });
+        });
+
+        RouteRole('user|admin|officer',function(){
+            Route::controller(TransactionController::class)->group(function ()
+            {
+                Route::get('transactions', 'index')->name('transactions.index');
             });
         });
     });
