@@ -42,10 +42,10 @@ jobs:
         run: php artisan migrate --env=testing --force
 
       - name: Run Unit tests -- feature tests
-        run: php artisan test --testsuite=Feature
+        run: ./vendor/bin/phpunit --env=testing --testsuite=Feature
 
       - name: Run Unit tests -- unit tests
-        run: php artisan test --env=testing --testsuite=Unit
+        run: ./vendor/bin/phpunit --env=testing --testsuite=Unit
 
       - name: Set up Git user identity
         run: |
@@ -69,4 +69,5 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          git push heroku production --force
+          git rebase heroku/main || git rebase heroku/master
+          git push heroku main --force
