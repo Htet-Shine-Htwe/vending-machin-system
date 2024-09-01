@@ -1,10 +1,19 @@
+/**
+ * Represents an item in the cart.
+ * @class
+ */
 class CartItem {
     constructor(id, name, price, quantity = 1) {
         Object.assign(this, { id, name, price, quantity });
     }
 
-    increaseQuantity(amount = 1) {
-        this.quantity += amount;
+    increaseQuantity(amount = 1,maxQuantity=100) {
+        if(this.quantity >= maxQuantity ){
+            this.quantity = maxQuantity;
+        }
+        else{
+            this.quantity += amount
+        }
     }
 
     decreaseQuantity(amount = 1) {
@@ -16,6 +25,10 @@ class CartItem {
     }
 }
 
+/**
+ * Represents a shopping cart.
+ * @class
+ */
 class Cart {
     constructor() {
         this.items = this.loadCart();
@@ -30,10 +43,10 @@ class Cart {
         this.updateCartState(item.id);
     }
 
-    increaseQuantity(itemId) {
+    increaseQuantity(itemId,max) {
         const item = this.findItem(itemId);
         if (item) {
-            item.increaseQuantity();
+            item.increaseQuantity(1,max);
             this.updateCartState(itemId);
         }
     }
@@ -52,8 +65,10 @@ class Cart {
     }
 
     clearCart() {
-        this.items.length = 0;
+        this.items = [];
+        this.saveCart();
         this.refreshUI();
+        this.updateCartBadge();
     }
 
     getTotalPrice() {
@@ -66,6 +81,7 @@ class Cart {
     }
 
     saveCart() {
+        this.checkCartIsEmpty();
         localStorage.setItem('cart', JSON.stringify(this.items));
     }
 
@@ -76,10 +92,19 @@ class Cart {
     }
 
     displayTotal() {
+        this.checkCartIsEmpty();
         if (this.totalPriceElement) {
             this.totalPriceElement.textContent = this.getTotalPrice();
         }
     }
+
+    checkCartIsEmpty()
+    {
+        this.items.length === 0 ?
+            $("#checkout-btn").prop('disabled', true)
+           : $("#checkout-btn").prop('disabled', false);
+    }
+
 
     updateButtonState(productId, isInCart) {
         const button = document.querySelector(`[data-product-id="${productId}"]`);

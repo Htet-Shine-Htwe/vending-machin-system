@@ -1,4 +1,4 @@
-function appendItemToCartUI(product, cart) {
+function appendItemToCartUI(product, cart,server_product) {
     const itemElement = document.createElement('div');
     itemElement.className =
         'flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm';
@@ -33,14 +33,13 @@ function appendItemToCartUI(product, cart) {
             const item = cart.items.find(cartItem => cartItem.id === productId);
             if (item) {
                 const counterInput = itemElement.querySelector('.counter-input');
-                console.log(itemElement)
                 if (counterInput) {
                     counterInput.value = item.quantity;
                 } else {
                     console.error('Counter input element not found');
                 }
             } else {
-                itemElement.remove(); // Remove item from UI if it no longer exists in the cart
+                itemElement.remove();
             }
         } else {
             console.error('Item element not found');
@@ -48,7 +47,7 @@ function appendItemToCartUI(product, cart) {
     }
 
     itemElement.querySelector('.increment-button').addEventListener('click', function () {
-        cart.increaseQuantity(product.id);
+        cart.increaseQuantity(product.id,server_product.quantity_available);
         updateCartItemUI(product.id);
     });
 
