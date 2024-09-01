@@ -38,7 +38,6 @@ jobs:
           echo "DB_CONNECTION=sqlite" >> .env.testing
           echo "DB_DATABASE=:memory:" >> .env.testing
           php artisan key:generate --env=testing
-
       - name: Run migrations for testing
         run: php artisan migrate --env=testing --force
 
@@ -58,7 +57,7 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/your-production-app.git
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/vending-machine-system.git
           git fetch heroku production
           git rebase -X theirs heroku/main
 
