@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Ensure full history is fetched to avoid shallow clone issues
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -38,6 +40,7 @@ jobs:
           echo "DB_CONNECTION=sqlite" >> .env.testing
           echo "DB_DATABASE=:memory:" >> .env.testing
           php artisan key:generate --env=testing
+
       - name: Run migrations for testing
         run: php artisan migrate --env=testing --force
 
@@ -69,5 +72,4 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-
-          git push heroku production --force
+          git push heroku HEAD:main --force  # Push to the 'main' branch on Heroku
