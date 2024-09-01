@@ -63,17 +63,35 @@ This repository contains the code for a Vending Machine System. The project is b
 
    The application will be accessible at `http://localhost:8000`.
 
-## Usage
+## User Account Information
 
-### API Endpoints
+- **Username:** admin@gmail.com
+- **Password:** password
 
-The Vending Machine System exposes various API endpoints for product management and transactions. Below are some of the key endpoints:
+### Authentication Endpoints
 
-- **GET /api/products** - List all products
-- **POST /api/products** - Create a new product
-- **PUT /api/products/{id}** - Update a product
-- **DELETE /api/products/{id}** - Delete a product
-- **POST /api/purchase** - Make a purchase
+- **`POST /api/v1/login`**  
+  Authenticate user and return a token.
+
+- **`POST /api/v1/logout`**  
+  Log out the user and invalidate the token.
+
+- **`POST /api/v1/refresh`**  
+  Refresh the authentication token.
+
+- **`POST /api/v1/register`**  
+  Register a new user.
+
+- **`GET|HEAD /api/user`**  
+  Get user details.
+
+### Purchase Endpoints
+
+- **`GET|HEAD /api/v1/user/purchase`**  
+  List all purchases for the user.
+
+- **`POST /api/v1/user/purchase/create`**  
+  Create a new purchase for the user.
 
 ### Frontend
 
